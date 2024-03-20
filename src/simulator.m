@@ -81,7 +81,7 @@ classdef simulator < handle
 
             dist = obj.uav.disturbance(iscaptured);
             [t, z] = obj.quadrotor.solve(tspan, z0, u, dist);
-            d = [dist.r(t), dist.n(t)];
+            d = [dist.r(t,z), dist.n(t,z)];
             y = obj.uav.location(iscaptured, t, z);
         end
 

@@ -45,7 +45,7 @@ classdef uav < handle
                     end
                 end
             else
-                y = z;
+                y = z(1:3);
             end
         end
 
