@@ -78,7 +78,6 @@ classdef quadrotor < handle
             if isnumeric(control)
                 control = @(t,z) control;
             end
-            
 
 
             if nargin < 5
