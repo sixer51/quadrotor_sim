@@ -43,7 +43,9 @@ classdef lqr_controller < handle
             % disp(obj.A);
             % disp(obj.B);
 
-            obj.Q = diag([1000,1000, 1000, 100, 100, 100, 100, 100, 100, 10000, 10000, 10000]);
+            C = diag([1000,1000, 1000, 100, 100, 100, 100, 100, 100, 10000, 10000, 10000]);
+            obj.Q = C.' * C;
+            % obj.Q = diag([1000,1000, 1000, 100, 100, 100, 100, 100, 100, 10000, 10000, 10000]);
             obj.R = eye(4) * 0.001;
 
         end
@@ -53,11 +55,15 @@ classdef lqr_controller < handle
             [K, S, P] = lqr(obj.A, obj.B, obj.Q, obj.R);
             % disp(K);
             % u = obj.u0 * [1;1;1;1]; % + K(:, 1:12) * ()
-
-            % catch uav
-            % u = -K * (z - [y; zeros(9, 1)]);
-            % move to certain position
-            u = -K * (z - [[1;1;1]; zeros(9, 1)]);
+            
+            if iscaptured
+                % move to certain position
+                u = -K * (z - [[0;0;0]; zeros(9, 1)]);
+            else
+                % catch uav
+                u = -K * (z - [y; zeros(9, 1)]);
+            end
+            
 
         end
     end
