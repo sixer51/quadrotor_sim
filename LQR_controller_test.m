@@ -14,6 +14,7 @@ sigma = 0.01;  % The proportionality constant relating thrust to torque [m]
 quad = quadrotor(g, l, m, diag(I), mu, sigma);
 
 % INTRUDER
+<<<<<<< Updated upstream
 path = @(t) [cos(t); sin(t); 2];
 dist = struct("r", @(t,z)0.1*[sin(t); sin(2*t); sin(4*t)],...
     "n", @(t,z) 0.1*[0.1; 0.01; 0.1]);
@@ -24,6 +25,25 @@ dist = struct("r", @(t,z)0.1*[sin(t); sin(2*t); sin(4*t)],...
 % dist = struct(...
 %     "r", @(t,z) 0.1 * [0; 0; sin(t)],...
 %     "n", @(t,z) 0.1 * [0.1; 0.01; 0.1]); 
+=======
+% circle path
+path = @(t) [cos(t); sin(t); 2];
+
+% straight line path
+% 0.1+0.2*t
+% path = @(t) [-5+0.2*t; cos(t); 3];
+% path = @(t) [1; 1; t];
+
+% path = @(t) [-2+0.2*t; -5+0.1*t; 2+0.2*t];
+% path = @(t) [3; -5+0.4*t; 2+0.3*t];
+% path = @(t) [3; -5+0.4*t; 4];
+
+% staright, horizontal movement
+% path = @(t) [-5+0.2*t; 1; 3];
+
+dist = struct("r", @(t,z)0.1*[sin(t); sin(2*t); sin(4*t)],...
+    "n", @(t,z) 0.1*[0.1; 0.01; 0.1]);
+>>>>>>> Stashed changes
  
 intruder = uav(path, dist);
 
