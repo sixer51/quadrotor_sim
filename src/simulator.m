@@ -37,7 +37,7 @@ classdef simulator < handle
 
             for k=1:length(ts)-1
                 tspan = [ts(k), ts(k+1)];
-                [t_, z_, u_, d_, y_] = obj.step(iscaptured,tspan, z0);
+                [t_, z_, u_, d_, y_] = obj.step(iscaptured,tspan, z0, y);
                 % t = [t; t_(1:end-1,:)];
                 % z = [z; z_(1:end-1,:)];
                 % u = [u; u_(1:end-1,:)];
@@ -67,10 +67,10 @@ classdef simulator < handle
 
         end
 
-        function [t,z,u,d,y] = step(obj, iscaptured, tspan, z0)
+        function [t,z,u,d,y] = step(obj, iscaptured, tspan, z0, y_all)
 
             y0 = obj.uav.location(iscaptured, tspan(1), z0);
-            u = obj.control.output(iscaptured, z0, y0);
+            u = obj.control.output(iscaptured, z0, y0, y_all);
             if isnumeric(u) && isvector(u)
                 if length(u) ~= 4
                     error("u=control(z0, quadrotor, uav) is not a 4x1 vector.");
