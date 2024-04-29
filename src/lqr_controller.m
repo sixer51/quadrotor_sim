@@ -75,7 +75,7 @@ classdef lqr_controller < handle
         end
 
         function u = output(obj, iscaptured, z, y, y_all)
-            Q_captured = diag([10,10, 100, 1000, 1000, 1000, 1, 1, 10, 1000, 1000, 1000]);
+            Q_captured = diag([10,10, 100, 10000, 10000, 1000, 1, 1, 10, 1000, 1000, 1000]);
 
             % good for horizontal straight line
             % Q_far = diag([10,10, 10, 100, 100, 100, 1, 1, 5, 1000, 1000, 1000]);
@@ -107,11 +107,15 @@ classdef lqr_controller < handle
             % Q_far = diag([10,10, 10, 100, 100, 100, 1, 1, 5, 1000, 1000, 1000]);
             % Q_conservative = diag([1000, 1000, 1000, 200, 200, 200, 1, 1, 5, 500, 500, 500]);
             % Q_close = diag([1000,1000, 1000, 500, 500, 500, 1, 1, 5, 500, 500, 500]);
-
+            
+            % catched path = @(t) [-5+0.3*t; 2; 2+cos(t)]; 0.8m, 0.6m
             Q_far = diag([10,10, 10, 100, 100, 100, 1, 1, 5, 1000, 1000, 1000]);
-            Q_conservative = diag([1000, 1000, 1000, 200, 200, 200, 1, 1, 5, 500, 500, 500]);
-            Q_close = diag([1000,1000, 1000, 500, 500, 500, 1, 1, 5, 500, 500, 500]);
-            Q_captured = diag([10,10, 100, 1000, 1000, 1000, 1, 1, 10, 1000, 1000, 1000]);
+            Q_conservative = diag([1200, 1200, 2000, 1000, 1000, 500, 1, 1, 5, 500, 500, 500]);
+            Q_close = diag([1000,1000, 2000, 1000, 1000, 1000, 1, 1, 5, 1000, 1000, 1000]);
+
+            % Q_far = diag([10,10, 10, 100, 100, 100, 1, 1, 5, 1000, 1000, 1000]);
+            % Q_conservative = diag([1200, 1200, 2000, 1000, 1000, 500, 1, 1, 5, 500, 500, 500]);
+            % Q_close = diag([2000,2000, 4000, 1000, 1000, 1000, 1, 1, 5, 1000, 1000, 1000]);
            
 
             is_inside_nest = false;
@@ -126,7 +130,7 @@ classdef lqr_controller < handle
             if iscaptured || ~is_inside_nest
                 % move to certain position
                 % disp("back to home");
-                zd = [[0;0;1]; zeros(9, 1)];
+                zd = [[0;0;2]; zeros(9, 1)];
                 z_error = z - zd;
             else
                 % catch uav
@@ -152,8 +156,9 @@ classdef lqr_controller < handle
             distance = vecnorm(z(1:3) - y);
             if iscaptured
                 Q_curr = Q_captured;
-            elseif distance > 1
+            elseif distance > 0.8
                 Q_curr = Q_far;
+                % z_error(3) = z_error(3)+0.3;
             elseif distance < 0.6 && ~has_aggresive_rotation
                 Q_curr = Q_close;
             

@@ -14,20 +14,42 @@ sigma = 0.01;  % The proportionality constant relating thrust to torque [m]
 quad = quadrotor(g, l, m, diag(I), mu, sigma);
 
 % INTRUDER
-% circle path
-% path = @(t) [cos(t); sin(t); 2];
+
+%%%%%%%%%%%%%%%%% can catch %%%%%%%%%%%%%%%%%%%
+% path = @(t) [-5+0.3*t; 2; 2+cos(t)]; % catched!
+% path = @(t) [-5+0.3*t; 2; 3+sin(t)]; 
+% path = @(t) [5-0.2*t; 4; 2+cos(t)];
+% path = @(t) [2; 3+0.5*cos(t); 1+0.5*sin(t)];
+path = @(t) [2; 3+0.8*cos(t); 6+0.8*sin(t)];
+
+% path = @(t) [0; 2+cos(t); 0.4*t]; % catched
+% path = @(t) [3; 1+cos(t); 0.6*t];
+% path = @(t) [3+cos(t); -4; 0.6*t];
+
+% path = @(t) [5-0.2*t; 2+0.3*cos(t); 3];
+% path = @(t) [5-0.3*t; -3+0.2*cos(t); 3]; % multiple oscillation
 
 % straight line path
-% 0.1+0.2*t
-% path = @(t) [-5+0.2*t; cos(t); 3];
-% path = @(t) [1; 1; t];
-
-% path = @(t) [-2+0.2*t; -5+0.1*t; 2+0.2*t];
-path = @(t) [3; -5+0.4*t; 2+0.3*t];
+% path = @(t) [1; 3; t];
+% path = @(t) [5-0.3*t; -2; 2+0.2*t];
+% path = @(t) [3; -5+0.4*t; 2+0.3*t];
 % path = @(t) [3; -5+0.4*t; 4];
-
-% staright, horizontal movement
+% path = @(t) [-5+0.2*t; 1; 2+0.2*t];
+% path = @(t) [0.2*t; 5-0.5*t; 1];
+% path = @(t) [0.2*t; -5+0.5*t; 4];
 % path = @(t) [-5+0.2*t; 1; 3];
+
+%%%%%%%%%%%%%%%%% cannot catch %%%%%%%%%%%%%%%%%%%
+% path = @(t) [5-0.2*t; 2+cos(t); 3];
+% circle path
+% path = @(t) [cos(t); sin(t); 2]；
+% path = @(t) [3+0.2*cos(t); 1+0.4*sin(t); 2];
+
+% straight line with issues
+% path = @(t) [-2+0.2*t; -5+0.5*t; 4]; %cannot catch
+% path = @(t) [-2+0.2*t; -5+0.1*t; 2+0.2*t];
+% path = @(t) [0.2*t; -5+0.5*t; 2+0.2*t]; % oscillate after catch
+
 
 dist = struct("r", @(t,z)0.1*[sin(t); sin(2*t); sin(4*t)],...
     "n", @(t,z) 0.1*[0.1; 0.01; 0.1]);
